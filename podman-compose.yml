@@ -13,7 +13,7 @@ services:
       LANGUAGE: en_US:en
     #user: "1095:1095"
     user: "998:996"
-    command: ["/usr/local/sbin/elogd", "-c", "/usr/local/elog/elogd-opensystems.cfg", "-p", "8080"]
+    command: ["/usr/local/sbin/elogd", "-c", "/usr/local/elog/elogd.cfg", "-p", "8080"]
 volumes:
   elog-data:
 
