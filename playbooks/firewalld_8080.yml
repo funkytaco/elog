@@ -1,0 +1,43 @@
+---
+- name: Ensure port 8080 is open in firewall zone ushr
+  hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Install firewalld if not present
+      yum:
+        name: firewalld
+        state: present
+
+    - name: Ensure firewalld is running and enabled
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: Create the ushr zone if it does not exist
+      firewalld:
+        zone: ushr
+        state: present
+        permanent: yes
+
+    - name: Open port 8080/tcp in the ushr zone
+      firewalld:
+        zone: ushr
+        port: 8080/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: Reload firewalld to apply changes
+      firewalld:
+        state: reloaded
+        immediate: yes
+
+    - name: List open ports in the ushr zone to verify
+      command: firewall-cmd --zone=ushr --list-ports
+      register: firewall_ports
+
+    - name: Display open ports in the ushr zone
+      debug:
+        msg: "Open ports in ushr zone: {{ firewall_ports.stdout }}"

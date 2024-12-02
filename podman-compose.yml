@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  elog:
+    image: localhost/elog/elog:latest
+    container_name: elog
+    ports:
+      - "8080:8080"
+    volumes:
+      - elog-data:/usr/local/elog:Z
+    environment:
+      LANG: en_US.UTF-8
+      LANGUAGE: en_US:en
+    #user: "1095:1095"
+    user: "998:996"
+    command: ["/usr/local/sbin/elogd", "-c", "/usr/local/elog/elogd-opensystems.cfg", "-p", "8080"]
+volumes:
+  elog-data:
+
